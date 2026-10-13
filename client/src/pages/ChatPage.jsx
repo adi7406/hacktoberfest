@@ -21,6 +21,7 @@ import {
 } from '../services/api';
 import SourceCard from '../components/SourceCard';
 import LegalDisclaimer from '../components/LegalDisclaimer';
+import GuidanceContent, { parseInlineMarkdown } from '../components/GuidanceContent';
 
 const EXAMPLE_QUESTIONS = [
   {
@@ -162,28 +163,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
     }
   }
 
-  function renderFormattedContent(content) {
-    if (!content) return null;
-    const lines = content.split('\n');
-    return lines.map((line, idx) => {
-      if (line.startsWith('### ')) {
-        return <h3 key={idx}>{line.replace('### ', '')}</h3>;
-      }
-      if (line.startsWith('## ')) {
-        return <h2 key={idx}>{line.replace('## ', '')}</h2>;
-      }
-      if (line.startsWith('1. ') || line.startsWith('2. ') || line.startsWith('3. ')) {
-        return <p key={idx} style={{ paddingLeft: '0.75rem', fontWeight: 500 }}>{line}</p>;
-      }
-      if (line.startsWith('- ')) {
-        return <p key={idx} style={{ paddingLeft: '0.75rem', color: 'var(--color-text-secondary)' }}>• {line.slice(2)}</p>;
-      }
-      if (line.trim() === '') {
-        return <div key={idx} style={{ height: '0.5rem' }} />;
-      }
-      return <p key={idx}>{line}</p>;
-    });
-  }
+
 
   return (
     <div className="chat-layout">
@@ -319,7 +299,11 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
                   )}
 
                   <div className="message-content">
-                    {renderFormattedContent(msg.content)}
+                    {msg.role === 'assistant' ? (
+                      <GuidanceContent content={msg.content} kind={msg.kind} />
+                    ) : (
+                      <p>{parseInlineMarkdown(msg.content)}</p>
+                    )}
                   </div>
 
                   {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (

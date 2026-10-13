@@ -8,17 +8,17 @@
 
 ## Current Status
 - Working:
-  - Curated legal knowledge base with 5 verified records across Consumer Protection, Cybercrime, and CPGRAMS (`server/data/legalData.json`).
+  - Curated legal knowledge base with 7 verified records across 5 essential pathways: Consumer Complaints, Cybercrime Fraud, CPGRAMS Public Grievances, Tenancy & Security Deposits (Model Tenancy Act), and Unpaid Wages (SAMADHAN Labour Conciliation) (`server/data/legalData.json`).
   - Deterministic legal retrieval and citation validation engine (`server/services/legalSearchService.js`).
   - LLM service with server-side DigitalOcean Inference integration and safe source-grounded fallback (`server/services/llmService.js`).
   - Conversation persistence service with Supabase and memory-backed demo mode (`server/services/conversationService.js`).
   - Express API server with CORS, validation, and error-handling middleware (`server/server.js`, `server/routes/api.js`).
-  - 12 comprehensive unit and integration tests passing (`server/tests/`).
-  - Complete React frontend with Modern Institutional Minimalism design tokens, Landing Page, Chat Transcript, Source Citation Cards, and Consultation History (`client/src/`).
+  - 14 comprehensive unit and integration tests passing (`server/tests/`).
+  - Complete React frontend with Modern Institutional Minimalism design tokens, Landing Page, Chat Transcript, rich GuidanceContent cards, Source Citation Cards, and Consultation History (`client/src/`).
   - Production frontend build verified (`client/dist/` via `npm run client:build`).
 - Partial: None.
 - Broken: None.
-- Not started: Additional legal categories (e.g. rental deposit disputes, unpaid wages) pending team verification of official sources.
+- Not started: Optional categories pending team verification of official sources.
 
 ## Completed Work
 - [x] Initial repository inspection, branch audit, and persistent agent rule confirmation (`AGENTS.md`).
@@ -31,13 +31,15 @@
 - [x] Implemented `server/services/conversationService.js` (Supabase + demo memory store).
 - [x] Implemented Express middleware (`validateRequest.js`, `errorHandler.js`, `authMiddleware.js`).
 - [x] Implemented API controllers and route handlers (`chatController.js`, `conversationController.js`, `api.js`).
-- [x] Created and passed 12 automated unit and integration tests (`npm test`).
+- [x] Implemented rich `GuidanceContent` component for formatted actionable step cards, limitation callout boxes, and parsed inline markdown.
+- [x] Expanded knowledge base to 5 verified legal pathways with 7 verified government records (Consumer, Cybercrime, CPGRAMS, Model Tenancy Act, and SAMADHAN Labour Portal).
+- [x] Created and passed 14 automated unit and integration tests (`npm test`).
 - [x] Initialized `client/` with Vite, React 18, and `lucide-react`.
 - [x] Implemented Modern Institutional Minimalism design tokens in `client/src/index.css`.
-- [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
-- [x] Verified frontend production build (`npm run client:build` succeeded in 2.21s).
+- [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`, `GuidanceContent.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
+- [x] Verified frontend production build (`npm run client:build` succeeded in 2.27s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, and `ab10a9f`).
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, and `f405070`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).

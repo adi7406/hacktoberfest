@@ -33,13 +33,14 @@
 - [x] Implemented API controllers and route handlers (`chatController.js`, `conversationController.js`, `api.js`).
 - [x] Implemented rich `GuidanceContent` component for formatted actionable step cards, limitation callout boxes, and parsed inline markdown.
 - [x] Expanded knowledge base to 5 verified legal pathways with 7 verified government records (Consumer, Cybercrime, CPGRAMS, Model Tenancy Act, and SAMADHAN Labour Portal).
+- [x] Added consultation deletion with confirmation dialog, one-click copy guidance button with visual feedback, and removable composer pathway filter tag.
 - [x] Created and passed 14 automated unit and integration tests (`npm test`).
 - [x] Initialized `client/` with Vite, React 18, and `lucide-react`.
 - [x] Implemented Modern Institutional Minimalism design tokens in `client/src/index.css`.
 - [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`, `GuidanceContent.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
-- [x] Verified frontend production build (`npm run client:build` succeeded in 2.27s).
+- [x] Verified frontend production build (`npm run client:build` succeeded in 2.25s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, and `f405070`).
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, and `d484148`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).
@@ -105,8 +106,8 @@
 
 ## Tests and Commands
 - Passed:
-  - `npm test` (monorepo & server) — 12/12 tests passed (44ms health, 18ms chat validation, 10ms retrieval, 14ms conversation CRUD).
-  - `npm run client:build` — Vite production build successful (1924 modules transformed in 2.58s).
+  - `npm test` (monorepo & server) — 14/14 tests passed (health check, request validation, 5 legal pathways retrieval, strict citation validation, demo conversation CRUD, etc.).
+  - `npm run client:build` — Vite production build successful (1925 modules transformed in 2.25s).
 - Failed: None.
 - Not run: End-to-end browser automation (ready for optional browser subagent verification).
 - Mocked: Upstream LLM provider and Supabase run in deterministic/in-memory demo mode during local testing when credentials are absent.

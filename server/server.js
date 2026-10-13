@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+
 const apiRouter = require('./routes/api');
 const authMiddleware = require('./middleware/authMiddleware');
 const errorHandler = require('./middleware/errorHandler');

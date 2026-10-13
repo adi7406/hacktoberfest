@@ -79,16 +79,22 @@ function generateDeterministicFallback({ query, retrievedSources }) {
 }
 
 /**
- * Call DigitalOcean Inference API (OpenAI-compatible chat completions)
+ * Call LLM Inference API (Groq, DigitalOcean, or OpenAI-compatible endpoint)
  */
-async function callDigitalOceanInference({ query, retrievedSources }) {
-  const apiKey = process.env.DIGITALOCEAN_INFERENCE_API_KEY;
-  const baseUrl = process.env.DIGITALOCEAN_INFERENCE_URL || process.env.DIGITALOCEAN_INFERENCE_BASE_URL;
-  const model = process.env.DIGITALOCEAN_MODEL || process.env.DIGITALOCEAN_INFERENCE_MODEL || 'meta-llama/Llama-3.3-70B-Instruct';
+async function callModelInference({ query, retrievedSources }) {
+  const apiKey = process.env.GROQ_API_KEY || process.env.DIGITALOCEAN_INFERENCE_API_KEY;
+  const baseUrl = process.env.GROQ_API_URL
+    || process.env.DIGITALOCEAN_INFERENCE_URL
+    || process.env.DIGITALOCEAN_INFERENCE_BASE_URL
+    || 'https://api.groq.com/openai/v1';
+  const model = process.env.GROQ_MODEL
+    || process.env.DIGITALOCEAN_MODEL
+    || process.env.DIGITALOCEAN_INFERENCE_MODEL
+    || 'llama-3.3-70b-versatile';
   const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS, 10) || 30000;
 
-  if (!apiKey || !baseUrl) {
-    // Graceful fallback to deterministic generator when API key is not configured
+  if (!apiKey || !baseUrl || apiKey.startsWith('your-')) {
+    // Graceful fallback to deterministic generator when API key is placeholder or unconfigured
     return null;
   }
 
@@ -137,7 +143,8 @@ Limitations: ${(s.limitations || []).join('; ')}
     clearTimeout(timer);
 
     if (!res.ok) {
-      console.warn(`DigitalOcean Inference returned HTTP ${res.status}: ${res.statusText}`);
+      const errBody = await res.text().catch(() => '');
+      console.warn(`LLM Inference provider returned HTTP ${res.status}: ${res.statusText} - ${errBody}`);
       return null;
     }
 
@@ -159,7 +166,7 @@ Limitations: ${(s.limitations || []).join('; ')}
     };
   } catch (err) {
     clearTimeout(timer);
-    console.warn('DigitalOcean Inference call error:', err.message);
+    console.warn('LLM Inference call error:', err.message);
     return null;
   }
 }
@@ -186,7 +193,7 @@ async function generateLegalResponse({ query, retrievedSources }) {
   }
 
   // Attempt live model inference if configured
-  let result = await callDigitalOceanInference({ query, retrievedSources });
+  let result = await callModelInference({ query, retrievedSources });
 
   // If unconfigured or upstream failed, use deterministic grounded synthesis
   if (!result) {

@@ -14,12 +14,16 @@ import {
   Home,
   Briefcase,
   Menu,
-  X
+  X,
+  Trash2,
+  Copy,
+  Check
 } from 'lucide-react';
 import {
   sendChatMessage,
   getConversations,
-  getConversation
+  getConversation,
+  deleteConversation
 } from '../services/api';
 import SourceCard from '../components/SourceCard';
 import LegalDisclaimer from '../components/LegalDisclaimer';
@@ -65,6 +69,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState(null);
 
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
@@ -108,6 +113,27 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  async function handleDeleteConversation(id, e) {
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this consultation?')) return;
+    try {
+      await deleteConversation(id);
+      setConversations(prev => prev.filter(c => c.id !== id));
+      if (currentConversationId === id) {
+        handleStartNewChat();
+      }
+    } catch (err) {
+      setErrorMessage('Failed to delete consultation.');
+    }
+  }
+
+  function handleCopyMessage(id, content) {
+    if (!content) return;
+    navigator.clipboard.writeText(content);
+    setCopiedMessageId(id);
+    setTimeout(() => setCopiedMessageId(null), 2200);
   }
 
   function handleStartNewChat() {
@@ -251,19 +277,27 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
             </div>
           ) : (
             conversations.map(conv => (
-              <button
-                key={conv.id}
-                className={`conversation-item ${conv.id === currentConversationId ? 'active' : ''}`}
-                onClick={() => handleSelectConversation(conv.id)}
-              >
-                <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {conv.title || 'Legal Consultation'}
-                </span>
-                <span className="conversation-date">
-                  <Clock size={11} style={{ display: 'inline', marginRight: '4px' }} />
-                  {new Date(conv.updated_at || conv.created_at).toLocaleDateString()}
-                </span>
-              </button>
+              <div key={conv.id} className="conversation-row">
+                <button
+                  className={`conversation-item ${conv.id === currentConversationId ? 'active' : ''}`}
+                  onClick={() => handleSelectConversation(conv.id)}
+                >
+                  <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {conv.title || 'Legal Consultation'}
+                  </span>
+                  <span className="conversation-date">
+                    <Clock size={11} style={{ display: 'inline', marginRight: '4px' }} />
+                    {new Date(conv.updated_at || conv.created_at).toLocaleDateString()}
+                  </span>
+                </button>
+                <button
+                  className="delete-conv-btn"
+                  title="Delete consultation"
+                  onClick={(e) => handleDeleteConversation(conv.id, e)}
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
             ))
           )}
         </div>
@@ -301,12 +335,33 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
                 </div>
 
                 <div className="message-bubble">
-                  {msg.role === 'assistant' && msg.kind && (
-                    <div className={`kind-badge ${msg.kind}`}>
-                      {msg.kind === 'guidance' && <FileText size={12} />}
-                      {msg.kind === 'clarification' && <HelpCircle size={12} />}
-                      {msg.kind === 'insufficient_evidence' && <AlertTriangle size={12} />}
-                      <span>{msg.kind.replace('_', ' ')}</span>
+                  {msg.role === 'assistant' && (
+                    <div className="message-bubble-header">
+                      {msg.kind && (
+                        <div className={`kind-badge ${msg.kind}`}>
+                          {msg.kind === 'guidance' && <FileText size={12} />}
+                          {msg.kind === 'clarification' && <HelpCircle size={12} />}
+                          {msg.kind === 'insufficient_evidence' && <AlertTriangle size={12} />}
+                          <span>{msg.kind.replace('_', ' ')}</span>
+                        </div>
+                      )}
+                      <button
+                        className="copy-message-btn"
+                        title="Copy guidance to clipboard"
+                        onClick={() => handleCopyMessage(msg.id || index, msg.content)}
+                      >
+                        {copiedMessageId === (msg.id || index) ? (
+                          <>
+                            <Check size={12} color="#16803D" />
+                            <span style={{ color: '#16803D' }}>Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={12} />
+                            <span>Copy</span>
+                          </>
+                        )}
+                      </button>
                     </div>
                   )}
 
@@ -365,6 +420,18 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
 
         {/* Chat Input Bar */}
         <div className="chat-input-bar">
+          {selectedCategory && (
+            <div className="composer-category-tag">
+              <span>Filtered by pathway: <strong>{CATEGORY_SHORTCUTS.find(c => c.id === selectedCategory)?.label || selectedCategory}</strong></span>
+              <button
+                className="tag-remove-btn"
+                onClick={() => setSelectedCategory(null)}
+                title="Clear pathway filter"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          )}
           <div className="input-container">
             <textarea
               ref={textareaRef}

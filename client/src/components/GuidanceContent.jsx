@@ -9,13 +9,18 @@ import {
 } from 'lucide-react';
 
 /**
- * Safely parses inline markdown (bold **text** and [link text](url))
+ * Safely parses inline markdown (bold **text**, italics *text*, [link text](url), and bare URLs)
  * and returns React elements without using dangerouslySetInnerHTML.
  */
 export function parseInlineMarkdown(text) {
   if (!text || typeof text !== 'string') return text;
 
-  const regex = /(\*\*.*?\*\*|\[.*?\]\(https?:\/\/[^\s\)]+\))/g;
+  // Regex matching:
+  // 1. Bold: **...**
+  // 2. Markdown link: [text](https://...)
+  // 3. Bare URL: https://... or http://...
+  // 4. Italics: *...*
+  const regex = /(\*\*.*?\*\*|\[.*?\]\(https?:\/\/[^\s\)]+\)|https?:\/\/[^\s<>'")\]]+|\*[^*]+?\*)/g;
   const parts = [];
   let lastIndex = 0;
   let match;
@@ -48,6 +53,34 @@ export function parseInlineMarkdown(text) {
           <ExternalLink size={11} style={{ display: 'inline', marginLeft: '2px', verticalAlign: 'baseline' }} />
         </a>
       );
+    } else if (token.startsWith('http://') || token.startsWith('https://')) {
+      let cleanUrl = token;
+      let trailingPunctuation = '';
+      if (/[.,;:)]$/.test(cleanUrl)) {
+        trailingPunctuation = cleanUrl.slice(-1);
+        cleanUrl = cleanUrl.slice(0, -1);
+      }
+      parts.push(
+        <React.Fragment key={`bare-${match.index}`}>
+          <a
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-legal-link"
+          >
+            <span>{cleanUrl.replace(/^https?:\/\//, '')}</span>
+            <ExternalLink size={11} style={{ display: 'inline', marginLeft: '2px', verticalAlign: 'baseline' }} />
+          </a>
+          {trailingPunctuation}
+        </React.Fragment>
+      );
+    } else if (token.startsWith('*') && token.endsWith('*')) {
+      const italicContent = token.slice(1, -1);
+      parts.push(
+        <em key={`em-${match.index}`} style={{ fontStyle: 'italic', color: 'var(--color-text-secondary)' }}>
+          {italicContent}
+        </em>
+      );
     }
 
     lastIndex = regex.lastIndex;
@@ -61,7 +94,48 @@ export function parseInlineMarkdown(text) {
 }
 
 /**
- * Splits response text into structured sections by markdown headings (### or ##).
+ * Detects whether a given line is a section heading.
+ * Supports:
+ * - Markdown headings: ### Heading or ## Heading
+ * - Standalone bold lines: **Heading** or **Heading:** or **1. Heading**
+ */
+function isSectionHeading(line) {
+  const trimmed = line.trim();
+  if (!trimmed) return null;
+
+  // 1. Markdown ### or ## or #
+  if (/^#{1,3}\s+/.test(trimmed)) {
+    return trimmed.replace(/^#{1,3}\s+/, '').replace(/\*\*/g, '').replace(/:$/, '').trim();
+  }
+
+  // 2. Standalone bold line: **What This May Mean** or **Possible Next Steps** or **1. Possible Next Steps**
+  const boldMatch = trimmed.match(/^\s*(?:\d+\.\s*)?\*\*([^*]+)\*\*:?\s*$/);
+  if (boldMatch) {
+    const candidate = boldMatch[1].trim();
+    const lower = candidate.toLowerCase();
+    if (
+      lower.includes('mean') ||
+      lower.includes('next steps') ||
+      lower.includes('what to do') ||
+      lower.includes('step') ||
+      lower.includes('uncertain') ||
+      lower.includes('limitation') ||
+      lower.includes('question') ||
+      lower.includes('follow-up') ||
+      lower.includes('clarif') ||
+      lower.includes('consider') ||
+      lower.includes('summary') ||
+      lower.includes('action')
+    ) {
+      return candidate.replace(/:$/, '').trim();
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Splits response text into structured sections by markdown headings or standalone bold titles.
  */
 function parseSections(text) {
   const sections = [];
@@ -69,12 +143,13 @@ function parseSections(text) {
   let currentSection = { title: null, lines: [] };
 
   for (const line of lines) {
-    if (line.startsWith('### ') || line.startsWith('## ')) {
+    const heading = isSectionHeading(line);
+    if (heading) {
       if (currentSection.title || currentSection.lines.length > 0) {
         sections.push(currentSection);
       }
       currentSection = {
-        title: line.replace(/^(###|##)\s*/, '').trim(),
+        title: heading,
         lines: []
       };
     } else {
@@ -148,7 +223,7 @@ export default function GuidanceContent({ content, kind }) {
         const titleLower = (section.title || '').toLowerCase();
 
         // 1. "What This May Mean" or Summary Section
-        if (titleLower.includes('what this may mean') || titleLower.includes('summary') || titleLower.includes('explanation')) {
+        if (titleLower.includes('what this may mean') || titleLower.includes('summary') || titleLower.includes('explanation') || titleLower.includes('mean')) {
           return (
             <div key={sIdx} className="guidance-section-block section-meaning">
               <div className="guidance-section-header">
@@ -172,7 +247,7 @@ export default function GuidanceContent({ content, kind }) {
         }
 
         // 2. "Possible Next Steps" Section (Actionable Checklist)
-        if (titleLower.includes('next steps') || titleLower.includes('practical') || titleLower.includes('action')) {
+        if (titleLower.includes('next steps') || titleLower.includes('step') || titleLower.includes('practical') || titleLower.includes('action') || titleLower.includes('what to do')) {
           // Parse numbered or bulleted steps
           const steps = [];
           let currentStep = null;
@@ -245,7 +320,49 @@ export default function GuidanceContent({ content, kind }) {
           );
         }
 
-        // Fallback for any other custom section title
+        // 4. "Follow-up Questions to Consider" / "Clarifying Questions" Section
+        if (titleLower.includes('question') || titleLower.includes('clarif') || titleLower.includes('consider')) {
+          const questions = [];
+          let currentQ = null;
+
+          for (const line of section.lines) {
+            const trimmed = line.trim();
+            if (!trimmed) continue;
+            const qMatch = trimmed.match(/^(\d+\.|[-•*])\s+(.*)/);
+            if (qMatch) {
+              if (currentQ) questions.push(currentQ);
+              currentQ = qMatch[2];
+            } else if (currentQ) {
+              currentQ += ' ' + trimmed;
+            } else {
+              questions.push(trimmed);
+            }
+          }
+          if (currentQ) questions.push(currentQ);
+
+          return (
+            <div key={sIdx} className="guidance-section-block section-questions">
+              <div className="guidance-section-header">
+                <div className="section-icon-badge badge-questions">
+                  <HelpCircle size={15} />
+                </div>
+                <h3 className="section-heading-text">{section.title}</h3>
+              </div>
+              <div className="questions-container">
+                {questions.map((q, qIdx) => (
+                  <div key={qIdx} className="question-card-item">
+                    <HelpCircle size={14} className="question-icon" />
+                    <div className="question-card-content">
+                      {parseInlineMarkdown(q)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        // Fallback for any other custom section title (e.g. Source notes)
         return (
           <div key={sIdx} className="guidance-section-block">
             {section.title && <h3 className="section-heading-text">{section.title}</h3>}

@@ -1,20 +1,27 @@
 const { validateSourceIds, formatSourcesForClient } = require('./legalSearchService');
 
 const SYSTEM_PROMPT = `You are NyayaAccess, an Indian legal-information and public-service navigation assistant.
-You provide general information, not legal representation or a guaranteed legal opinion.
+You provide general legal information and procedural guidance, not formal legal representation or guaranteed outcomes.
 
-CORE RULES:
-1. Use only the supplied verified source records for claims about laws, legal rights, deadlines, eligibility, fees, procedures, authorities, and official contact routes.
-2. Do not rely on your pretrained knowledge to fill gaps in the supplied evidence.
-3. Do not invent statutes, sections, case law, deadlines, URLs, quotations, or citations.
-4. If the evidence does not answer the question, explain what is missing and ask a focused clarifying question, or recommend consulting the relevant official authority or a qualified lawyer.
-5. Distinguish facts stated by an official source from general explanations.
-7. Use plain, accessible, respectful language.
-8. Organize your response into:
-   - What This May Mean (Plain-language explanation)
-   - Possible Next Steps (Short actionable checklist)
-   - What Is Uncertain & Limitations (Jurisdictional or factual limitations)
-9. Cite only the provided source IDs in brackets (e.g. [source-id]).`;
+CORE OPERATING RULES:
+1. Ground all claims strictly in the supplied verified government records. Never invent statutes, section numbers, case law, deadlines, URLs, or helplines.
+2. If evidence lacks details, state the limitation openly. Do not speculate beyond official guidance.
+3. Use plain, respectful, accessible language.
+4. Structure your response into EXACTLY these 4 level-3 markdown sections (use '### ' prefix for each):
+
+### What This May Mean
+(Explain the user's issue in plain language, describing the legal concept, authority in charge, and public service framework based on verified records.)
+
+### Possible Next Steps
+(Provide a numbered 1-4 checklist of concrete, immediate actions: e.g. calling verified toll-free helplines, registering on official portals, or collating documentary proof.)
+
+### What Is Uncertain & Limitations
+(List statutory limitations, jurisdictional boundaries, lack of guaranteed outcomes, or need for magistrate/court orders.)
+
+### Follow-Up Questions to Consider
+(Ask 1 to 2 focused clarifying questions to help the user identify critical details: e.g. how many hours/days ago did the incident occur, what documentation or transaction reference IDs they possess, or which state/district the dispute occurred in.)
+
+5. In text, cite retrieved source IDs using square brackets (e.g. [source-id]).`;
 
 /**
  * Fallback synthesis when inference provider is unconfigured or unavailable.
@@ -68,6 +75,27 @@ function generateDeterministicFallback({ query, retrievedSources }) {
     }
   } else {
     explanation += `- This guidance is for informational purposes and does not substitute for qualified legal advice.\n`;
+  }
+
+  explanation += `\n### Follow-Up Questions to Consider\n`;
+  if (primarySource.topic === 'cybercrime') {
+    explanation += `1. **Timing Window:** Did the unauthorized transaction occur within the last 2 to 4 hours (the critical "Golden Hour" for fund lien requests)?\n`;
+    explanation += `2. **Transaction Details:** Do you have the 12-digit UPI reference (UTR) number or debit transaction SMS ready?\n`;
+  } else if (primarySource.topic === 'consumer_complaint') {
+    explanation += `1. **Documentation:** Do you possess the purchase tax invoice, warranty card, and any written correspondence with the seller?\n`;
+    explanation += `2. **Purchase Channel:** Was the product bought from an online e-commerce platform or directly from a local store?\n`;
+  } else if (primarySource.topic === 'rental_dispute') {
+    explanation += `1. **Tenancy Proof:** Do you possess an executed rent agreement and signed handover inspection records?\n`;
+    explanation += `2. **Notice Status:** Has a formal written demand notice for return of deposit been sent to the landlord?\n`;
+  } else if (primarySource.topic === 'unpaid_wages') {
+    explanation += `1. **Employment Record:** Do you hold an appointment letter, monthly payslips, or bank salary deposit statements?\n`;
+    explanation += `2. **Withheld Duration:** How many months of salary or settlement payments are currently overdue?\n`;
+  } else if (primarySource.topic === 'government_grievance') {
+    explanation += `1. **Prior Submissions:** Which Central Ministry or Department is responsible, and has any prior local complaint been filed?\n`;
+    explanation += `2. **Timeline:** Has more than 30 days passed since your original grievance submission without response?\n`;
+  } else {
+    explanation += `1. What specific documents or transaction references do you currently possess regarding this issue?\n`;
+    explanation += `2. Has any formal complaint or legal notice already been submitted?\n`;
   }
 
   return {

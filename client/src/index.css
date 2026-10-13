@@ -636,6 +636,11 @@ input, textarea, select {
   color: var(--color-primary-blue);
 }
 
+.section-icon-badge.badge-questions {
+  background-color: var(--color-soft-blue);
+  color: var(--color-primary-blue);
+}
+
 .section-heading-text {
   font-size: 1.0625rem;
   font-weight: 700;
@@ -752,6 +757,44 @@ input, textarea, select {
   left: 0.25rem;
   color: var(--color-warning);
   font-weight: bold;
+}
+
+/* Follow-Up Questions Section */
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.question-card-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background-color: var(--color-page);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary-blue);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  transition: all var(--transition-fast);
+}
+
+.question-card-item:hover {
+  background-color: var(--color-soft-blue);
+  border-color: rgba(36, 87, 167, 0.3);
+  border-left-color: var(--color-primary-blue);
+}
+
+.question-icon {
+  color: var(--color-primary-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.question-card-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  flex: 1;
 }
 
 /* Inline Links and Typography */

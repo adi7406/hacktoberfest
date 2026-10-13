@@ -37,7 +37,7 @@
 - [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
 - [x] Verified frontend production build (`npm run client:build` succeeded in 2.21s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
-- [x] Committed complete working prototype to Git branch `prototype` (commit `1a17195`, followed by design alignment commit `034c7d8`).
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, and `ab10a9f`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).

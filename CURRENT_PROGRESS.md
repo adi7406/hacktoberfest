@@ -40,7 +40,8 @@
 - [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`, `GuidanceContent.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
 - [x] Verified frontend production build (`npm run client:build` succeeded in 2.25s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, and `d484148`).
+- [x] Optimized lexical retrieval in `server/services/legalSearchService.js` with topical anchoring and multi-token keyword weighting, completely eliminating cross-domain false positives.
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, and `742aad7`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).

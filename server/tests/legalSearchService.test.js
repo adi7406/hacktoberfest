@@ -92,3 +92,26 @@ test('Formats sources for client matching API contract', () => {
   assert.equal(formatted[0].jurisdiction, 'India');
   assert.ok(Array.isArray(formatted[0].limitations));
 });
+
+test('Retrieves Model Tenancy Act source for landlord security deposit dispute', () => {
+  const results = retrieveSources({
+    query: 'My landlord in Bangalore is refusing to return my security deposit after I vacated the flat',
+    category: 'rental_dispute'
+  });
+
+  assert.ok(results.length > 0, 'Should find rental dispute records');
+  assert.equal(results[0].id, 'rental-deposit-model-tenancy-act');
+  assert.equal(results[0].topic, 'rental_dispute');
+});
+
+test('Retrieves SAMADHAN portal source for unpaid salary / wage delay dispute', () => {
+  const results = retrieveSources({
+    query: 'My employer company has not paid my salary for the last 3 months and is refusing full and final settlement',
+    category: 'unpaid_wages'
+  });
+
+  assert.ok(results.length > 0, 'Should find unpaid wages records');
+  assert.equal(results[0].id, 'unpaid-wages-samadhan-portal');
+  assert.equal(results[0].topic, 'unpaid_wages');
+});
+

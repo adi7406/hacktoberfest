@@ -8,7 +8,8 @@ import {
   FileSearch,
   BookOpen,
   Compass,
-  Lock,
+  Briefcase,
+  Home,
   ExternalLink
 } from 'lucide-react';
 
@@ -33,6 +34,20 @@ const VERIFIED_CATEGORIES = [
     icon: Landmark,
     description: 'Central government administrative delays, pensions, public sector banking grievances, and DARPG portal appeals.',
     verifiedTag: 'CPGRAMS Portal (pgportal.gov.in)'
+  },
+  {
+    id: 'rental_dispute',
+    title: 'Tenancy & Security Deposits',
+    icon: Home,
+    description: 'Withholding of residential security deposit, unlawful eviction threats, and dispute adjudication under Rent Authorities.',
+    verifiedTag: 'Model Tenancy Act & State Rent Authorities'
+  },
+  {
+    id: 'unpaid_wages',
+    title: 'Unpaid Wages & Salary Delays',
+    icon: Briefcase,
+    description: 'Unpaid salary dues, delayed settlements, unlawful wage deductions, and industrial conciliation through the Labour Commissioner.',
+    verifiedTag: 'SAMADHAN Labour Portal (samadhan.labour.gov.in)'
   }
 ];
 

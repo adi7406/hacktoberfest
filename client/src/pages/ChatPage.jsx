@@ -11,6 +11,8 @@ import {
   ShoppingBag,
   ShieldAlert,
   Landmark,
+  Home,
+  Briefcase,
   Menu,
   X
 } from 'lucide-react';
@@ -33,6 +35,14 @@ const EXAMPLE_QUESTIONS = [
     category: "cybercrime"
   },
   {
+    text: "My landlord is refusing to return my residential security deposit after I vacated the flat with zero damages.",
+    category: "rental_dispute"
+  },
+  {
+    text: "My company has not paid my salary for the last 3 months and is stalling my full and final settlement.",
+    category: "unpaid_wages"
+  },
+  {
     text: "My central government pension payment has been delayed for several months without explanation from the department.",
     category: "government_grievance"
   }
@@ -41,6 +51,8 @@ const EXAMPLE_QUESTIONS = [
 const CATEGORY_SHORTCUTS = [
   { id: 'consumer_complaint', label: 'Consumer Disputes', icon: ShoppingBag },
   { id: 'cybercrime', label: 'Cyber Financial Fraud', icon: ShieldAlert },
+  { id: 'rental_dispute', label: 'Tenancy & Deposits', icon: Home },
+  { id: 'unpaid_wages', label: 'Unpaid Wages', icon: Briefcase },
   { id: 'government_grievance', label: 'Central Grievances', icon: Landmark }
 ];
 

@@ -155,5 +155,70 @@
       "pgportal"
     ],
     "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "rental-deposit-model-tenancy-act",
+    "title": "Model Tenancy Act — Security Deposit & Adjudication Guidelines",
+    "authority": "Ministry of Housing and Urban Affairs (MoHUA), Government of India",
+    "sourceType": "official_guidance",
+    "url": "https://mohua.gov.in/",
+    "topic": "rental_dispute",
+    "jurisdiction": ["India"],
+    "content": "Under the Model Tenancy Act guidelines framed by the Central Government, the security deposit to be paid by the tenant in advance for residential premises is capped at a maximum of two months' rent. The security deposit is refundable to the tenant upon handing over vacant possession of the premises after deducting any legitimate arrears or agreed damages. Disputes regarding deposit withholding or tenancy breaches are adjudicated through designated Rent Authorities and Rent Courts.",
+    "sectionReference": "Model Tenancy Act, Section 10 (Security Deposit) & Chapter V",
+    "publishedAt": "2021-06-02",
+    "effectiveFrom": "2021-06-02",
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "Tenancy and rent control are state subjects; applicability depends on whether the specific State or Union Territory has enacted or amended its state tenancy laws aligned with the Model Tenancy Act.",
+      "A written, registered tenancy agreement and documentary proof of rent/deposit payments (bank statements, receipts) are required for formal Rent Authority proceedings."
+    ],
+    "keywords": [
+      "rental dispute",
+      "security deposit",
+      "landlord",
+      "tenant",
+      "rent agreement",
+      "rent control",
+      "model tenancy act",
+      "deposit refund",
+      "rent authority",
+      "eviction"
+    ],
+    "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "unpaid-wages-samadhan-portal",
+    "title": "SAMADHAN Portal for Industrial & Wage Dispute Conciliation",
+    "authority": "Ministry of Labour and Employment, Government of India",
+    "sourceType": "portal_page",
+    "url": "https://samadhan.labour.gov.in/",
+    "topic": "unpaid_wages",
+    "jurisdiction": ["India"],
+    "content": "Workers and employees facing non-payment of earned wages, unlawful salary deductions, or unpaid dues from an employer can register industrial and wage grievances through the Ministry of Labour and Employment's SAMADHAN Portal (samadhan.labour.gov.in). The system initiates conciliation between the worker and employer before the designated Conciliation Officer / Labour Commissioner to achieve formal settlement.",
+    "sectionReference": "SAMADHAN Citizen Portal & Payment of Wages / Industrial Disputes Act Provisions",
+    "publishedAt": null,
+    "effectiveFrom": null,
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "SAMADHAN handles central sphere undertakings directly (e.g. central PSUs, banking, railways, telecommunications, defense, ports); private companies and state establishments may be referred to State Labour Commissioners or local Labour Courts under the State Shops & Establishments Act.",
+      "Complainants should maintain employment contracts, appointment letters, pay slips, attendance records, and bank statements showing non-credit of salary."
+    ],
+    "keywords": [
+      "unpaid wages",
+      "salary delay",
+      "pending salary",
+      "employer fraud",
+      "labour dispute",
+      "samadhan portal",
+      "labour commissioner",
+      "wage deductions",
+      "workman dues",
+      "salary not paid"
+    ],
+    "reviewedBy": "legal-research-team"
   }
 ]
+

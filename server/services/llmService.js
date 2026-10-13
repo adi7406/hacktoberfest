@@ -48,6 +48,14 @@ function generateDeterministicFallback({ query, retrievedSources }) {
     explanation += `1. **Lodge Official Grievance:** Submit an online grievance through CPGRAMS at [pgportal.gov.in](${primarySource.url}).\n`;
     explanation += `2. **Track Registration Number:** Note the unique grievance registration number provided to monitor departmental action.\n`;
     explanation += `3. **Appeal if Necessary:** If the resolution provided is unsatisfactory, an administrative appeal can be filed within the portal.\n\n`;
+  } else if (primarySource.topic === 'rental_dispute') {
+    explanation += `1. **Issue Written Demand Notice:** Send a formal written notice (via speed post or registered email) referencing the rent agreement, tenancy period, and demanding refund within the statutory notice period.\n`;
+    explanation += `2. **Collate Payment & Tenancy Evidence:** Compile bank statements showing deposit payment, signed rent agreement, handover inspection receipts, and communication logs.\n`;
+    explanation += `3. **Approach Designated Rent Authority:** If the landlord unlawfully retains the deposit beyond contractual terms, file a dispute before the Rent Authority / Rent Tribunal under applicable State Tenancy / Model Tenancy provisions.\n\n`;
+  } else if (primarySource.topic === 'unpaid_wages') {
+    explanation += `1. **Submit Dispute on SAMADHAN Portal:** Register an online industrial wage dispute at [samadhan.labour.gov.in](${primarySource.url}) to initiate formal conciliation proceedings.\n`;
+    explanation += `2. **Gather Employment Proofs:** Collate appointment letter, attendance records, payslips, email work approvals, and bank statements showing salary non-credit.\n`;
+    explanation += `3. **Approach Labour Commissioner:** If conciliation does not yield settlement, the matter proceeds for recovery certificate / prosecution under the Payment of Wages or Industrial Disputes framework.\n\n`;
   } else {
     explanation += `1. Review the official instructions published at [${primarySource.title}](${primarySource.url}).\n`;
     explanation += `2. Gather and verify relevant documentary records before proceeding.\n\n`;

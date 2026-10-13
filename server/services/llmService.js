@@ -9,12 +9,12 @@ CORE RULES:
 3. Do not invent statutes, sections, case law, deadlines, URLs, quotations, or citations.
 4. If the evidence does not answer the question, explain what is missing and ask a focused clarifying question, or recommend consulting the relevant official authority or a qualified lawyer.
 5. Distinguish facts stated by an official source from general explanations.
-6. Mention material jurisdictional limitations. Never guarantee an outcome or promise that a complaint has been lodged.
-7. Use plain, accessible, respectful language. Organize your response into:
-   - Plain-Language Summary
-   - Practical Next Steps
-   - Important Limitations
-8. Cite only the provided source IDs in brackets (e.g. [source-id]).`;
+7. Use plain, accessible, respectful language.
+8. Organize your response into:
+   - What This May Mean (Plain-language explanation)
+   - Possible Next Steps (Short actionable checklist)
+   - What Is Uncertain & Limitations (Jurisdictional or factual limitations)
+9. Cite only the provided source IDs in brackets (e.g. [source-id]).`;
 
 /**
  * Fallback synthesis when inference provider is unconfigured or unavailable.
@@ -33,9 +33,9 @@ function generateDeterministicFallback({ query, retrievedSources }) {
   const primarySource = retrievedSources[0];
   const citedIds = retrievedSources.map(s => s.id);
 
-  let explanation = `### Plain-Language Summary\nBased on official guidance from **${primarySource.authority}**, here is verified information relevant to your issue:\n\n${primarySource.content}\n\n`;
+  let explanation = `### What This May Mean\nBased on official guidance from **${primarySource.authority}**, here is verified information relevant to your issue:\n\n${primarySource.content}\n\n`;
 
-  explanation += `### Practical Next Steps\n`;
+  explanation += `### Possible Next Steps\n`;
   if (primarySource.topic === 'consumer_complaint') {
     explanation += `1. **Attempt Pre-Litigation Grievance:** Register your complaint on the National Consumer Helpline at [consumerhelpline.gov.in](${primarySource.url}) or call toll-free **1915**.\n`;
     explanation += `2. **Preserve Documentation:** Keep all purchase invoices, payment receipts, written communications, and warranty cards handy.\n`;
@@ -53,7 +53,7 @@ function generateDeterministicFallback({ query, retrievedSources }) {
     explanation += `2. Gather and verify relevant documentary records before proceeding.\n\n`;
   }
 
-  explanation += `### Important Limitations\n`;
+  explanation += `### What Is Uncertain & Limitations\n`;
   if (primarySource.limitations && primarySource.limitations.length > 0) {
     for (const lim of primarySource.limitations) {
       explanation += `- ${lim}\n`;

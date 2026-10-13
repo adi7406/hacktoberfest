@@ -1,5 +1,16 @@
 import React from 'react';
-import { ShoppingBag, ShieldAlert, Landmark, ArrowRight, CheckCircle2 } from 'lucide-react';
+import {
+  ShoppingBag,
+  ShieldAlert,
+  Landmark,
+  ArrowRight,
+  CheckCircle2,
+  FileSearch,
+  BookOpen,
+  Compass,
+  Lock,
+  ExternalLink
+} from 'lucide-react';
 
 const VERIFIED_CATEGORIES = [
   {
@@ -28,20 +39,21 @@ const VERIFIED_CATEGORIES = [
 export default function LandingPage({ onStartChat }) {
   return (
     <div className="main-content">
+      {/* 1. Hero Section */}
       <section className="hero-section">
         <div className="hero-pill">
           <CheckCircle2 size={13} />
-          <span>Verified Indian Legal Knowledge Base</span>
+          <span>Source-Grounded Indian Legal Navigation</span>
         </div>
 
         <h1 className="hero-title">
-          Understand Your Legal Rights.<br />
-          Backed by Verified Official Portals.
+          Understand your options.<br />
+          Find the right next step.
         </h1>
 
         <p className="hero-description">
-          Describe your legal issue or public grievance in plain language.
-          NyayaAccess retrieves verified official government guidelines, outlines practical next steps, and provides direct links to dispute resolution portals.
+          Describe your legal issue or public grievance in everyday language.
+          NyayaAccess retrieves verified official government guidelines, explains relevant rights in plain words, and connects you directly to official dispute portals.
         </p>
 
         <div className="hero-actions">
@@ -52,6 +64,7 @@ export default function LandingPage({ onStartChat }) {
         </div>
       </section>
 
+      {/* 2. Category Shortcuts */}
       <section className="categories-container">
         <div className="section-label">Supported Legal Pathways</div>
         <div className="category-grid">
@@ -77,6 +90,111 @@ export default function LandingPage({ onStartChat }) {
           })}
         </div>
       </section>
+
+      {/* 3. Three-Step How It Works (FRONTEND_DESIGN.md Section 4.1) */}
+      <section style={{ backgroundColor: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)', padding: '3.5rem 1.5rem' }}>
+        <div style={{ maxWidth: '1040px', margin: '0 auto' }}>
+          <div className="section-label" style={{ textAlign: 'center' }}>How It Works</div>
+          <h2 style={{ textAlign: 'center', fontSize: '1.75rem', fontWeight: 700, marginBottom: '2.5rem' }}>
+            A structured path from confusion to clear action
+          </h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+            <div style={{ padding: '1.5rem', background: 'var(--color-page)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-md)', background: 'var(--color-soft-blue)', color: 'var(--color-primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, marginBottom: '1rem' }}>
+                <FileSearch size={18} />
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>1. Describe the Issue</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                Explain your problem in simple words. Answer focused follow-up questions if important jurisdictional facts are missing.
+              </p>
+            </div>
+
+            <div style={{ padding: '1.5rem', background: 'var(--color-page)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-md)', background: 'var(--color-soft-blue)', color: 'var(--color-primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, marginBottom: '1rem' }}>
+                <BookOpen size={18} />
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>2. Review Verified Evidence</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                The assistant searches our curated knowledge base of official acts and government portals, presenting plain explanations backed by official links.
+              </p>
+            </div>
+
+            <div style={{ padding: '1.5rem', background: 'var(--color-page)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: 'var(--radius-md)', background: 'var(--color-soft-blue)', color: 'var(--color-primary-blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, marginBottom: '1rem' }}>
+                <Compass size={18} />
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.5rem' }}>3. Take Cautious Next Steps</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                Receive a practical checklist: toll-free helplines, official grievance URLs, documentation requirements, and when to seek an advocate.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Transparency & Privacy Section */}
+      <section style={{ maxWidth: '1040px', margin: '0 auto', padding: '3.5rem 1.5rem', width: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+          <div>
+            <div className="section-label">Trust & Transparency</div>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1rem' }}>
+              Responsible AI for Legal Navigation
+            </h2>
+            <p style={{ fontSize: '0.9375rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
+              NyayaAccess does not guess or generate unsupported legal conclusions from model memory.
+              Every guidance point is grounded in human-verified records from official gazettes and portals.
+            </p>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.875rem' }}>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-primary)' }}>
+                <CheckCircle2 size={16} color="#16803D" />
+                <span>Zero fabricated statutes or fake helpline numbers</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-primary)' }}>
+                <CheckCircle2 size={16} color="#16803D" />
+                <span>Explicit uncertainty indicators when records are insufficient</span>
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-primary)' }}>
+                <Lock size={16} color="#2457A7" />
+                <span>Privacy by default: no Aadhaar, PAN, or passwords collected</span>
+              </li>
+            </ul>
+          </div>
+
+          <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.75rem' }}>Verified Official Portals</h3>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--color-text-secondary)', marginBottom: '1.25rem' }}>
+              Direct access to trusted public grievance and dispute resolution mechanisms:
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.8125rem' }}>
+              <a href="https://consumerhelpline.gov.in" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.625rem 0.75rem', background: 'var(--color-page)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <span>National Consumer Helpline (NCH 1915)</span>
+                <ExternalLink size={13} />
+              </a>
+              <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.625rem 0.75rem', background: 'var(--color-page)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <span>National Cyber Crime Portal (Helpline 1930)</span>
+                <ExternalLink size={13} />
+              </a>
+              <a href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.625rem 0.75rem', background: 'var(--color-page)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <span>CPGRAMS Central Public Grievances</span>
+                <ExternalLink size={13} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Institutional Footer */}
+      <footer style={{ borderTop: '1px solid var(--color-border)', background: 'var(--color-surface)', padding: '2rem 1.5rem', textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>
+        <div style={{ maxWidth: '1040px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <p style={{ fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+            NyayaAccess — Public Legal Information & Navigation Assistant
+          </p>
+          <p>
+            Disclaimer: NyayaAccess provides general public legal information grounded in verified official sources. It is not a law firm, lawyer, court, or government authority, and does not provide formal legal representation or legal opinions.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -709,15 +709,46 @@ input, textarea, select {
   background-color: var(--color-soft-blue);
 }
 
-/* Responsive adjustments */
+/* Mobile Drawer & Responsive adjustments */
+.mobile-sidebar-toggle {
+  display: none;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0.5rem 1rem 0;
+  width: fit-content;
+}
+
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
   }
+  .mobile-sidebar-toggle {
+    display: inline-flex;
+  }
+  .chat-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 65px);
+  }
   .chat-sidebar {
     display: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    max-height: 280px;
+  }
+  .chat-sidebar.open {
+    display: flex;
   }
   .category-grid {
     grid-template-columns: 1fr;
   }
 }
+

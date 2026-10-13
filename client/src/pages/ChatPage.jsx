@@ -7,7 +7,12 @@ import {
   User,
   AlertTriangle,
   HelpCircle,
-  FileText
+  FileText,
+  ShoppingBag,
+  ShieldAlert,
+  Landmark,
+  Menu,
+  X
 } from 'lucide-react';
 import {
   sendChatMessage,
@@ -32,6 +37,12 @@ const EXAMPLE_QUESTIONS = [
   }
 ];
 
+const CATEGORY_SHORTCUTS = [
+  { id: 'consumer_complaint', label: 'Consumer Disputes', icon: ShoppingBag },
+  { id: 'cybercrime', label: 'Cyber Financial Fraud', icon: ShieldAlert },
+  { id: 'government_grievance', label: 'Central Grievances', icon: Landmark }
+];
+
 export default function ChatPage({ initialCategory, onResetCategory }) {
   const [conversations, setConversations] = useState([]);
   const [currentConversationId, setCurrentConversationId] = useState(null);
@@ -40,6 +51,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
@@ -77,6 +89,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
       const conv = await getConversation(id);
       setCurrentConversationId(conv.id);
       setMessages(conv.messages || []);
+      setSidebarOpen(false);
     } catch (e) {
       setErrorMessage('Could not load selected conversation.');
     } finally {
@@ -89,6 +102,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
     setMessages([]);
     setInputMessage('');
     setErrorMessage(null);
+    setSidebarOpen(false);
     if (onResetCategory) onResetCategory();
   }
 
@@ -107,6 +121,8 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
       created_at: new Date().toISOString()
     };
     setMessages(prev => [...prev, tempUserMsg]);
+    // Save draft text in case of failure
+    const draftText = inputMessage;
     setInputMessage('');
     setIsLoading(true);
 
@@ -131,7 +147,9 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
       setMessages(prev => [...prev, assistantMsg]);
       loadConversationList();
     } catch (err) {
-      setErrorMessage(err.message || 'An error occurred while contacting the assistant. Please try again.');
+      // Preserve user input on failure per FRONTEND_DESIGN.md section 4.2
+      setInputMessage(draftText);
+      setErrorMessage(err.message || 'An error occurred while contacting the assistant. Your input was preserved. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -169,8 +187,18 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
 
   return (
     <div className="chat-layout">
-      {/* Sidebar: History */}
-      <aside className="chat-sidebar">
+      {/* Mobile Drawer Toggle */}
+      <button
+        className="mobile-sidebar-toggle"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Toggle history and shortcuts menu"
+      >
+        {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+        <span>{sidebarOpen ? 'Close Menu' : 'History & Categories'}</span>
+      </button>
+
+      {/* Sidebar: Brand, New Chat, Category Shortcuts, History */}
+      <aside className={`chat-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <span className="sidebar-title">Consultations</span>
           <button
@@ -184,7 +212,47 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
           </button>
         </div>
 
+        {/* Category Shortcuts in Sidebar per FRONTEND_DESIGN.md section 4.2 */}
+        <div style={{ padding: '0.75rem 0.75rem 0.25rem', borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+            Verified Pathways
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            {CATEGORY_SHORTCUTS.map(sc => {
+              const Icon = sc.icon;
+              const isSelected = selectedCategory === sc.id;
+              return (
+                <button
+                  key={sc.id}
+                  onClick={() => setSelectedCategory(isSelected ? null : sc.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.375rem 0.5rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid',
+                    borderColor: isSelected ? 'var(--color-primary-blue)' : 'var(--color-border)',
+                    backgroundColor: isSelected ? 'var(--color-soft-blue)' : 'var(--color-page)',
+                    color: isSelected ? 'var(--color-primary-blue)' : 'var(--color-text-secondary)',
+                    fontSize: '0.75rem',
+                    fontWeight: isSelected ? 600 : 500,
+                    textAlign: 'left',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Icon size={13} />
+                  <span>{sc.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="conversation-history-list">
+          <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', padding: '0.5rem 0.5rem 0.25rem' }}>
+            Recent Sessions
+          </div>
           {conversations.length === 0 ? (
             <div style={{ padding: '1rem', color: 'var(--color-text-muted)', fontSize: '0.8125rem', textAlign: 'center' }}>
               No previous consultations
@@ -218,7 +286,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
             <div className="welcome-container">
               <h2 className="welcome-title">How can NyayaAccess assist you today?</h2>
               <p className="welcome-subtitle">
-                Select an example situation below or enter your own issue to retrieve verified official procedures and helplines.
+                Select an example situation below or enter your own issue to retrieve verified official procedures, statutory limitations, and helpline numbers.
               </p>
 
               <div className="example-prompts">
@@ -278,7 +346,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
                 <Shield size={18} />
               </div>
               <div className="message-bubble" style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem' }}>
-                Retrieving verified legal records and generating guidance...
+                Retrieving verified legal records and synthesizing guidance...
               </div>
             </div>
           )}
@@ -322,7 +390,7 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
             </button>
           </div>
           <div className="input-hint">
-            Press Enter to submit • Shift+Enter for new line
+            Press Enter to submit • Shift+Enter for new line • Grounded in official records
           </div>
         </div>
       </main>

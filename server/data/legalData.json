@@ -1,0 +1,159 @@
+[
+  {
+    "id": "consumer-helpline-nch",
+    "title": "National Consumer Helpline (NCH) Grievance Portal & Services",
+    "authority": "Department of Consumer Affairs, Ministry of Consumer Affairs, Food and Public Distribution, Government of India",
+    "sourceType": "official_guidance",
+    "url": "https://consumerhelpline.gov.in/",
+    "topic": "consumer_complaint",
+    "jurisdiction": ["India"],
+    "content": "Consumers who have faced deficiency in goods or services from a trader, manufacturer, or service provider can register pre-litigation grievances with the National Consumer Helpline (NCH). Complaints can be registered by dialing toll-free number 1915, via SMS to 8800001915, or online on the National Consumer Helpline portal (consumerhelpline.gov.in). NCH acts as an alternate dispute resolution and grievance facilitation platform between consumers and registered companies.",
+    "sectionReference": "NCH Citizen Portal FAQ & About Us",
+    "publishedAt": null,
+    "effectiveFrom": null,
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "NCH is a grievance mediation mechanism and not a judicial court; it cannot pass enforceable legal decrees if a non-partner company refuses voluntary settlement.",
+      "If grievance resolution through NCH fails or is unsatisfactory, formal consumer complaints may be filed before the Consumer Disputes Redressal Commission."
+    ],
+    "keywords": [
+      "consumer",
+      "complaint",
+      "grievance",
+      "refund",
+      "defective product",
+      "deficiency in service",
+      "helpline 1915",
+      "nch",
+      "ecommerce",
+      "warranty"
+    ],
+    "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "consumer-protection-act-edaakhil",
+    "title": "e-Daakhil Portal for Filing Consumer Complaints Online",
+    "authority": "National Consumer Disputes Redressal Commission (NCDRC), Department of Consumer Affairs, Government of India",
+    "sourceType": "portal_page",
+    "url": "https://edaakhil.nic.in/",
+    "topic": "consumer_complaint",
+    "jurisdiction": ["India"],
+    "content": "Under the Consumer Protection Act, 2019, consumers can electronically file formal consumer dispute petitions before District, State, and National Consumer Disputes Redressal Commissions using the e-Daakhil portal (edaakhil.nic.in). The portal enables digital registration, payment of requisite fees, document uploads, and tracking of formal case proceedings without needing physical presence for initial filing.",
+    "sectionReference": "Consumer Protection Act 2019, Chapter IV; e-Daakhil Guidelines",
+    "publishedAt": "2020-07-20",
+    "effectiveFrom": "2020-07-24",
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "Pecuniary jurisdiction applies: District Commissions hear claims up to Rs 50 Lakhs (subject to statutory revisions); State Commissions up to Rs 2 Crores; NCDRC above Rs 2 Crores.",
+      "Formal legal filing requires valid documentary proof (invoices, transaction proofs, written communications) and compliance with limitation periods (generally 2 years from cause of action)."
+    ],
+    "keywords": [
+      "consumer court",
+      "edaakhil",
+      "e-daakhil",
+      "consumer forum",
+      "consumer protection act 2019",
+      "district commission",
+      "dispute redressal",
+      "compensation",
+      "formal complaint"
+    ],
+    "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "cybercrime-financial-fraud-1930",
+    "title": "Citizen Financial Cyber Fraud Reporting System (Helpline 1930)",
+    "authority": "Indian Cyber Crime Coordination Centre (I4C), Ministry of Home Affairs, Government of India",
+    "sourceType": "official_guidance",
+    "url": "https://cybercrime.gov.in/",
+    "topic": "cybercrime",
+    "jurisdiction": ["India"],
+    "content": "Victims of financial cyber fraud (such as unauthorized UPI transfers, debit/credit card fraud, phishing, investment scams, or online banking frauds) should immediately call the National Cyber Crime Helpline number 1930 or file an incident on cybercrime.gov.in within the 'Golden Hour' (ideally within 2 to 4 hours of the incident). The Citizen Financial Cyber Fraud Reporting and Management System coordinates with banks, payment aggregators, and law enforcement agencies to freeze or trace defrauded funds before siphon-off.",
+    "sectionReference": "Citizen Financial Cyber Fraud Reporting System Advisory & Citizen Guide",
+    "publishedAt": null,
+    "effectiveFrom": null,
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "Immediate reporting is critical; delay increases the likelihood of defrauded funds being withdrawn through mule accounts or crypto rails.",
+      "Reporting on the portal creates an official acknowledgement and initiates fund-lien requests, but recovery depends on remaining balance in recipient accounts and court/magistrate release orders."
+    ],
+    "keywords": [
+      "cybercrime",
+      "cyber fraud",
+      "online fraud",
+      "upi scam",
+      "bank fraud",
+      "helpline 1930",
+      "financial fraud",
+      "phishing",
+      "golden hour",
+      "unauthorized transaction"
+    ],
+    "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "cybercrime-general-reporting-portal",
+    "title": "National Cyber Crime Reporting Portal - Incident Registration",
+    "authority": "Ministry of Home Affairs, Government of India",
+    "sourceType": "official_guidance",
+    "url": "https://cybercrime.gov.in/",
+    "topic": "cybercrime",
+    "jurisdiction": ["India"],
+    "content": "The National Cyber Crime Reporting Portal (cybercrime.gov.in) enables citizens to register complaints regarding all forms of cyber offenses, including online harassment, identity theft, unauthorized account access, social media impersonation, extortion, and cyber crimes against women and children. Complaints are routed to the relevant state/UT police cyber cell based on territorial jurisdiction for investigation and potential FIR registration.",
+    "sectionReference": "Citizen Portal Guidelines & FAQs",
+    "publishedAt": null,
+    "effectiveFrom": null,
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "Filing on the portal is an electronic complaint; the relevant local police station or Cyber Police Cell investigates and determines formal FIR conversion based on applicable law.",
+      "Complainant must preserve digital evidence (unaltered screenshots, transaction IDs, URL links, email headers, chat exports)."
+    ],
+    "keywords": [
+      "cyber crime",
+      "online harassment",
+      "identity theft",
+      "hacking",
+      "social media impersonation",
+      "cyber police",
+      "fir",
+      "digital evidence",
+      "mha portal"
+    ],
+    "reviewedBy": "legal-research-team"
+  },
+  {
+    "id": "cpgrams-public-grievance-portal",
+    "title": "Centralised Public Grievance Redress and Monitoring System (CPGRAMS)",
+    "authority": "Department of Administrative Reforms and Public Grievances (DARPG), Government of India",
+    "sourceType": "portal_page",
+    "url": "https://pgportal.gov.in/",
+    "topic": "government_grievance",
+    "jurisdiction": ["India"],
+    "content": "CPGRAMS (pgportal.gov.in) is an online 24x7 web platform enabling citizens to lodge grievances against central government ministries, departments, public sector banks, and affiliated public authorities regarding administrative service delivery, delays, or public service deficiencies. Citizens receive a unique registration number to track status and can appeal if the resolution is unsatisfactory.",
+    "sectionReference": "CPGRAMS Citizen Charter & Portal Overview",
+    "publishedAt": null,
+    "effectiveFrom": null,
+    "lastVerifiedAt": "2026-10-13",
+    "status": "verified",
+    "limitations": [
+      "CPGRAMS does NOT accept grievances on: RTI matters, court-subjudice matters, religious matters, matters concerning foreign governments, or employee-employer service matters.",
+      "Pure state-government subjects should be directed to respective State Public Grievance Portals (e.g., CM Helpline / Jan Sunwai) rather than central CPGRAMS."
+    ],
+    "keywords": [
+      "cpgrams",
+      "public grievance",
+      "government grievance",
+      "darpg",
+      "ministry complaint",
+      "pension delay",
+      "bank grievance",
+      "passport delay",
+      "pgportal"
+    ],
+    "reviewedBy": "legal-research-team"
+  }
+]

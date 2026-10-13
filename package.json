@@ -1,0 +1,14 @@
+{
+  "name": "nyaya-access-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NyayaAccess Indian legal information and public grievance assistant",
+  "scripts": {
+    "test": "npm --prefix server test",
+    "server:dev": "npm --prefix server run dev",
+    "server:start": "npm --prefix server start",
+    "server:test": "npm --prefix server test",
+    "client:dev": "npm --prefix client run dev",
+    "client:build": "npm --prefix client run build"
+  }
+}

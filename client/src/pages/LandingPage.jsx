@@ -10,7 +10,8 @@ import {
   Compass,
   Briefcase,
   Home,
-  ExternalLink
+  ExternalLink,
+  Lock
 } from 'lucide-react';
 
 const VERIFIED_CATEGORIES = [

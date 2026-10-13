@@ -5,7 +5,7 @@ const DATA_FILE_PATH = path.join(__dirname, '..', 'data', 'legalData.json');
 
 // Stop words that carry little legal/semantic meaning
 const STOP_WORDS = new Set([
-  'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be',
+  'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been',
   'in', 'on', 'at', 'to', 'for', 'with', 'by', 'about', 'against', 'between',
   'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from',
   'up', 'down', 'in', 'out', 'off', 'over', 'under', 'again', 'further',
@@ -13,7 +13,9 @@ const STOP_WORDS = new Set([
   'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such',
   'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very',
   'can', 'will', 'just', 'should', 'now', 'i', 'my', 'me', 'we', 'our',
-  'you', 'your', 'he', 'him', 'his', 'she', 'her', 'they', 'them', 'their'
+  'you', 'your', 'he', 'him', 'his', 'she', 'her', 'they', 'them', 'their',
+  'has', 'have', 'had', 'having', 'do', 'does', 'did', 'done',
+  'get', 'got', 'getting', 'make', 'made', 'making'
 ]);
 
 function tokenize(text) {
@@ -82,26 +84,57 @@ function retrieveSources({ query = '', category = null, limit = 3 }) {
     const recordTopic = (record.topic || '').toLowerCase();
 
     // 1. Category alignment bonus
-    if (normalizedCategory && (recordTopic === normalizedCategory || recordTopic.includes(normalizedCategory))) {
+    const categoryMatch = Boolean(normalizedCategory && (recordTopic === normalizedCategory || recordTopic.includes(normalizedCategory)));
+    if (categoryMatch) {
       score += 15;
     }
 
     // 2. Token match scoring
     const titleTokens = tokenize(record.title || '');
-    const keywordTokens = (record.keywords || []).flatMap(k => tokenize(k));
     const contentTokens = tokenize(record.content || '');
+
+    let titleScore = 0;
+    let keywordScore = 0;
 
     for (const token of queryTokens) {
       if (titleTokens.includes(token)) {
-        score += 8;
-      }
-      if (keywordTokens.includes(token)) {
-        score += 6;
-      }
-      if (contentTokens.includes(token)) {
-        score += 2;
+        titleScore += 8;
       }
     }
+
+    // Keyword matching: distinguish single-token vs multi-word keyword phrases
+    for (const kw of record.keywords || []) {
+      const kwTokens = tokenize(kw);
+      if (kwTokens.length === 1) {
+        if (queryTokens.includes(kwTokens[0])) {
+          keywordScore += 6;
+        }
+      } else if (kwTokens.length > 1) {
+        const matched = kwTokens.filter(t => queryTokens.includes(t));
+        if (matched.length === kwTokens.length) {
+          keywordScore += 12; // All tokens of the multi-word keyword matched
+        } else if (matched.length > 0) {
+          keywordScore += matched.length * 3; // Partial match
+        }
+      }
+    }
+
+    // Topical anchor rule: If neither category, nor title, nor keywords matched,
+    // the query has no topical link to this record. Do not allow pure body text false positives.
+    if (!categoryMatch && titleScore === 0 && keywordScore === 0) {
+      continue;
+    }
+
+    score += titleScore + keywordScore;
+
+    // Content tokens match
+    let contentMatches = 0;
+    for (const token of queryTokens) {
+      if (contentTokens.includes(token)) {
+        contentMatches++;
+      }
+    }
+    score += contentMatches * 2;
 
     // 3. Exact phrase match bonus
     const lowerQuery = query.toLowerCase().trim();
@@ -110,14 +143,14 @@ function retrieveSources({ query = '', category = null, limit = 3 }) {
         score += 20;
       }
       for (const kw of record.keywords || []) {
-        if (lowerQuery.includes(kw.toLowerCase()) || kw.toLowerCase().includes(lowerQuery)) {
+        if (lowerQuery.includes(kw.toLowerCase())) {
           score += 10;
         }
       }
     }
 
     // Minimum threshold to prevent returning irrelevant sources
-    if (score >= 4) {
+    if (score >= 6) {
       scoredRecords.push({
         ...record,
         _relevanceScore: score

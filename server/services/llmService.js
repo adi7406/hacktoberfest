@@ -251,5 +251,6 @@ async function generateLegalResponse({ query, retrievedSources }) {
 module.exports = {
   SYSTEM_PROMPT,
   generateLegalResponse,
-  generateDeterministicFallback
+  generateDeterministicFallback,
+  callModelInference
 };

@@ -103,3 +103,43 @@ test('Conversation management endpoints work in demo mode', async () => {
   assert.equal(fetched.id, created.id);
   assert.ok(Array.isArray(fetched.messages));
 });
+
+test('POST /api/documents/simplify rejects empty payload with 400', async () => {
+  const res = await fetch(`${baseUrl}/documents/simplify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  });
+  assert.equal(res.status, 400);
+  const data = await res.json();
+  assert.equal(data.error.code, 'INVALID_REQUEST');
+});
+
+test('POST /api/documents/simplify redacts sensitive data and returns structured simplification', async () => {
+  const sampleNotice = `
+    LEGAL NOTICE:
+    To Employee with PAN: ABCDE1234F and Aadhaar: 1234 5678 9012.
+    Regarding withheld wages and salary arrears for October 2024.
+    If you do not respond in 7 days, your full and final settlement will be permanently forfeited.
+  `;
+
+  const res = await fetch(`${baseUrl}/documents/simplify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: sampleNotice, filename: 'notice.txt' })
+  });
+
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.equal(data.success, true);
+  assert.ok(data.document.simplifiedContent, 'Should have simplified markdown content');
+  assert.ok(data.document.simplifiedContent.length > 50);
+  // Privacy check: sensitive numbers must be redacted
+  assert.ok(!data.document.sanitizedSnippet.includes('ABCDE1234F'), 'PAN must be redacted');
+  assert.ok(!data.document.sanitizedSnippet.includes('1234 5678 9012'), 'Aadhaar must be redacted');
+  assert.ok(data.document.sanitizedSnippet.includes('[REDACTED PAN NUMBER]'));
+  assert.ok(data.document.sanitizedSnippet.includes('[REDACTED AADHAAR NUMBER]'));
+  assert.ok(data.document.sources.length > 0, 'Should match statutory labour sources');
+  assert.ok(data.document.disclaimer.includes('general plain-language'));
+});
+

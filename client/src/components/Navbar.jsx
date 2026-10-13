@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, MessageSquare, History, Home } from 'lucide-react';
+import { Scale, MessageSquare, Home, FileText } from 'lucide-react';
 
 export default function Navbar({ activePage, setActivePage }) {
   return (
@@ -21,6 +21,13 @@ export default function Navbar({ activePage, setActivePage }) {
         >
           <Home size={16} />
           <span>Home</span>
+        </button>
+        <button
+          className={`nav-btn ${activePage === 'simplifier' ? 'active' : ''}`}
+          onClick={() => setActivePage('simplifier')}
+        >
+          <FileText size={16} />
+          <span>Document Simplifier</span>
         </button>
         <button
           className={`nav-btn ${activePage === 'chat' ? 'active' : ''}`}

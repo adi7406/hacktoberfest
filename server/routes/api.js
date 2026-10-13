@@ -11,6 +11,13 @@ const {
 } = require('../controllers/conversationController');
 const { getKnowledgeBaseSummary } = require('../services/legalSearchService');
 
+const multer = require('multer');
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB max document size
+});
+const { handleSimplifyDocument } = require('../controllers/documentController');
+
 // GET /api/health
 router.get('/health', (req, res) => {
   const kbSummary = getKnowledgeBaseSummary();
@@ -26,6 +33,9 @@ router.get('/health', (req, res) => {
 
 // POST /api/chat
 router.post('/chat', validateChatRequest, handleChat);
+
+// POST /api/documents/simplify
+router.post('/documents/simplify', upload.single('document'), handleSimplifyDocument);
 
 // Conversation endpoints
 router.post('/conversations', handleCreateConversation);

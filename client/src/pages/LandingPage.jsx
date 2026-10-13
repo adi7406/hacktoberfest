@@ -11,7 +11,8 @@ import {
   Briefcase,
   Home,
   ExternalLink,
-  Lock
+  Lock,
+  FileText
 } from 'lucide-react';
 
 const VERIFIED_CATEGORIES = [
@@ -52,7 +53,7 @@ const VERIFIED_CATEGORIES = [
   }
 ];
 
-export default function LandingPage({ onStartChat }) {
+export default function LandingPage({ onStartChat, onOpenSimplifier }) {
   return (
     <div className="main-content">
       {/* 1. Hero Section */}
@@ -76,6 +77,50 @@ export default function LandingPage({ onStartChat }) {
           <button className="btn-primary" onClick={() => onStartChat(null)}>
             <span>Get Legal Help</span>
             <ArrowRight size={16} />
+          </button>
+          <button
+            className="btn-secondary"
+            onClick={onOpenSimplifier}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+          >
+            <FileText size={16} />
+            <span>Simplify Legal Document</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Document Simplifier Spotlight Banner */}
+      <section style={{ maxWidth: '1040px', margin: '0 auto 2.5rem auto', padding: '0 1.5rem', width: '100%' }}>
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(36, 87, 167, 0.05) 0%, rgba(36, 87, 167, 0.02) 100%)',
+          border: '1px solid var(--color-border)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '1.5rem 1.75rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1.25rem'
+        }}>
+          <div style={{ maxWidth: '640px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-primary-blue)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.375rem' }}>
+              <FileText size={14} />
+              <span>Document Intelligence</span>
+            </div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.375rem', color: 'var(--color-text-primary)' }}>
+              Have a legal notice, agreement, or formal letter to understand?
+            </h3>
+            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, margin: 0 }}>
+              Upload a PDF or paste complex contract text. NyayaAccess redacts personal identifiers (Aadhaar, PAN, card numbers), decodes confusing legalese, flags critical clauses, and matches official remedies.
+            </p>
+          </div>
+          <button
+            className="btn-primary"
+            onClick={onOpenSimplifier}
+            style={{ padding: '0.625rem 1.25rem', fontSize: '0.875rem', whiteSpace: 'nowrap' }}
+          >
+            <FileText size={15} style={{ marginRight: '0.375rem' }} />
+            Try Document Simplifier
           </button>
         </div>
       </section>

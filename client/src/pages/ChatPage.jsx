@@ -60,11 +60,11 @@ const CATEGORY_SHORTCUTS = [
   { id: 'government_grievance', label: 'Central Grievances', icon: Landmark }
 ];
 
-export default function ChatPage({ initialCategory, onResetCategory }) {
+export default function ChatPage({ initialCategory, initialMessage, onResetCategory }) {
   const [conversations, setConversations] = useState([]);
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState(initialMessage || '');
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -83,6 +83,15 @@ export default function ChatPage({ initialCategory, onResetCategory }) {
       setSelectedCategory(initialCategory);
     }
   }, [initialCategory]);
+
+  useEffect(() => {
+    if (initialMessage) {
+      setInputMessage(initialMessage);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
+    }
+  }, [initialMessage]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -10,11 +10,12 @@
 - Working:
   - Curated legal knowledge base with 7 verified records across 5 essential pathways: Consumer Complaints, Cybercrime Fraud, CPGRAMS Public Grievances, Tenancy & Security Deposits (Model Tenancy Act), and Unpaid Wages (SAMADHAN Labour Conciliation) (`server/data/legalData.json`).
   - Deterministic legal retrieval and citation validation engine (`server/services/legalSearchService.js`).
-  - LLM service with server-side DigitalOcean Inference integration and safe source-grounded fallback (`server/services/llmService.js`).
+  - LLM service with server-side DigitalOcean / Groq Inference integration (`openai/gpt-oss-120b`) and safe source-grounded fallback (`server/services/llmService.js`).
+  - Legal Document Simplifier feature (`POST /api/documents/simplify`) accepting PDF uploads and pasted contracts/notices, with automatic privacy redaction of Aadhaar/PAN/card numbers, 5-part plain language breakdown, red-flag detection, and statutory source citation matching (`server/services/documentService.js`, `client/src/pages/DocumentSimplifierPage.jsx`).
   - Conversation persistence service with Supabase and memory-backed demo mode (`server/services/conversationService.js`).
   - Express API server with CORS, validation, and error-handling middleware (`server/server.js`, `server/routes/api.js`).
-  - 14 comprehensive unit and integration tests passing (`server/tests/`).
-  - Complete React frontend with Modern Institutional Minimalism design tokens, Landing Page, Chat Transcript, rich GuidanceContent cards, Source Citation Cards, and Consultation History (`client/src/`).
+  - 16 comprehensive unit and integration tests passing (`server/tests/`).
+  - Complete React frontend with Modern Institutional Minimalism design tokens, Landing Page, Chat Transcript, Document Simplifier page, rich GuidanceContent cards, Source Citation Cards, and Consultation History (`client/src/`).
   - Production frontend build verified (`client/dist/` via `npm run client:build`).
 - Partial: None.
 - Broken: None.
@@ -24,27 +25,28 @@
 - [x] Initial repository inspection, branch audit, and persistent agent rule confirmation (`AGENTS.md`).
 - [x] Reconciled and sanitized `docs/ENVIRONMENT_SETUP.md` (removed legacy template TMDB references).
 - [x] Created root `.gitignore` and `.env.example`.
-- [x] Initialized `server/package.json` and installed dependencies (`express`, `cors`, `dotenv`, `@supabase/supabase-js`).
+- [x] Initialized `server/package.json` and installed dependencies (`express`, `cors`, `dotenv`, `@supabase/supabase-js`, `multer`, `pdf-parse`).
 - [x] Created verified legal knowledge base in `server/data/legalData.json` per `docs/LEGAL_KNOWLEDGE_BASE.md`.
 - [x] Implemented `server/services/legalSearchService.js` (retrieval, scoring, tokenization, citation ID validation).
-- [x] Implemented `server/services/llmService.js` (DigitalOcean inference with prompt grounding and deterministic fallback).
+- [x] Implemented `server/services/llmService.js` (DigitalOcean / Groq inference with prompt grounding and deterministic fallback).
 - [x] Implemented `server/services/conversationService.js` (Supabase + demo memory store).
 - [x] Implemented Express middleware (`validateRequest.js`, `errorHandler.js`, `authMiddleware.js`).
-- [x] Implemented API controllers and route handlers (`chatController.js`, `conversationController.js`, `api.js`).
+- [x] Implemented API controllers and route handlers (`chatController.js`, `conversationController.js`, `documentController.js`, `api.js`).
 - [x] Implemented rich `GuidanceContent` component for formatted actionable step cards, limitation callout boxes, and parsed inline markdown.
 - [x] Expanded knowledge base to 5 verified legal pathways with 7 verified government records (Consumer, Cybercrime, CPGRAMS, Model Tenancy Act, and SAMADHAN Labour Portal).
 - [x] Added consultation deletion with confirmation dialog, one-click copy guidance button with visual feedback, and removable composer pathway filter tag.
-- [x] Created and passed 14 automated unit and integration tests (`npm test`).
+- [x] Created and passed 16 automated unit and integration tests (`npm test`).
 - [x] Initialized `client/` with Vite, React 18, and `lucide-react`.
 - [x] Implemented Modern Institutional Minimalism design tokens in `client/src/index.css`.
-- [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`, `GuidanceContent.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`).
-- [x] Verified frontend production build (`npm run client:build` succeeded in 2.25s).
+- [x] Built frontend components (`Navbar.jsx`, `LegalDisclaimer.jsx`, `SourceCard.jsx`, `GuidanceContent.jsx`) and pages (`LandingPage.jsx`, `ChatPage.jsx`, `DocumentSimplifierPage.jsx`).
+- [x] Verified frontend production build (`npm run client:build` succeeded in 2.17s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
 - [x] Optimized lexical retrieval in `server/services/legalSearchService.js` with topical anchoring and multi-token keyword weighting, completely eliminating cross-domain false positives.
 - [x] Fixed browser `window.Lock` Web API collision in [`LandingPage.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/pages/LandingPage.jsx) by importing `Lock` from `lucide-react`, resolving `TypeError: Illegal constructor`.
 - [x] Enabled and verified live Groq open-weight inference integration with `openai/gpt-oss-120b` and low-temperature factuality prompt grounding in [`llmService.js`](file:///e:/Engineering/hackStorm/NyayaAccess/server/services/llmService.js).
 - [x] Upgraded markdown section parser in [`GuidanceContent.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/components/GuidanceContent.jsx) to detect both `### ` and bold `**Heading**` titles, auto-link bare URLs, and render interactive "Follow-Up Questions to Consider" cards with `HelpCircle` badges.
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, `742aad7`, `99bd028`, `3c94270`, `2d8e60f`, and `d919ac7`).
+- [x] Added Legal Document Simplifier feature with drag-and-drop PDF parsing, text paste, automatic PII redaction (Aadhaar, PAN, card numbers, OTPs), clause breakdown, red-flag highlighting, and verified evidence retrieval.
+- [x] Committed complete working prototype to Git branch `prototype`.
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).
@@ -90,13 +92,16 @@
 
 ## Relevant File Map
 - `server/server.js` — Backend Express entry point.
-- `server/routes/api.js` — API endpoints for health, chat, and conversations.
+- `server/routes/api.js` — API endpoints for health, chat, documents, and conversations.
+- `server/services/documentService.js` — Document text extraction (PDF/text), privacy redaction, and plain-language simplification.
+- `server/controllers/documentController.js` — Handler for `POST /api/documents/simplify`.
 - `server/services/legalSearchService.js` — Keyword/category retrieval and citation validator.
 - `server/services/llmService.js` — Model inference and plain-language synthesis.
 - `server/data/legalData.json` — Curated verified legal knowledge base.
 - `client/src/App.jsx` — Frontend application root.
+- `client/src/pages/DocumentSimplifierPage.jsx` — Document Simplification UI with file dropzone, text paste, privacy banner, and source cards.
 - `client/src/pages/ChatPage.jsx` — Primary conversational UI with source cards.
-- `client/src/pages/LandingPage.jsx` — Landing page with legal pathways shortcuts.
+- `client/src/pages/LandingPage.jsx` — Landing page with legal pathways shortcuts and document intelligence spotlight.
 - `client/src/index.css` — Modern Institutional Minimalism styling and design tokens.
 - `CURRENT_PROGRESS.md` — Canonical progress and handoff document.
 
@@ -104,14 +109,15 @@
 - Endpoint/schema: Base path `/api`:
   - `GET /api/health` -> `{ status: "ok", service: "nyaya-access-api", knowledgeBase: { verifiedRecords, topics } }`
   - `POST /api/chat` -> `{ conversationId, message: { id, role, content, kind, createdAt }, sources, needsClarification, disclaimer }`
+  - `POST /api/documents/simplify` -> accepts multipart `document` or JSON `{ text, filename }`, returns `{ success: true, document: { filename, sanitizedTextLength, sanitizedSnippet, simplifiedContent, sources, disclaimer } }`
   - `GET/POST /api/conversations`, `GET/DELETE /api/conversations/:id`
 - Source IDs/citation rules: Every source rendered in `sources` must originate from verified retrieval results.
-- Environment variable names (names only): `PORT`, `NODE_ENV`, `CLIENT_ORIGIN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `DIGITALOCEAN_INFERENCE_URL`, `DIGITALOCEAN_INFERENCE_API_KEY`, `DIGITALOCEAN_MODEL`, `LLM_TIMEOUT_MS`, `MAX_MESSAGE_LENGTH`, `VITE_API_BASE_URL`.
+- Environment variable names (names only): `PORT`, `NODE_ENV`, `CLIENT_ORIGIN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`, `GROQ_MODEL`, `DIGITALOCEAN_INFERENCE_URL`, `DIGITALOCEAN_INFERENCE_API_KEY`, `DIGITALOCEAN_MODEL`, `LLM_TIMEOUT_MS`, `MAX_MESSAGE_LENGTH`, `VITE_API_BASE_URL`.
 
 ## Tests and Commands
 - Passed:
-  - `npm test` (monorepo & server) — 14/14 tests passed (health check, request validation, 5 legal pathways retrieval, strict citation validation, demo conversation CRUD, etc.).
-  - `npm run client:build` — Vite production build successful (1925 modules transformed in 2.25s).
+  - `npm test` (monorepo & server) — 16/16 tests passed (health check, request validation, 5 legal pathways retrieval, strict citation validation, demo conversation CRUD, document simplification endpoint, privacy PII redaction, etc.).
+  - `npm run client:build` — Vite production build successful (1926 modules transformed in 2.17s).
 - Failed: None.
 - Not run: End-to-end browser automation (ready for optional browser subagent verification).
 - Mocked: Upstream LLM provider and Supabase run in deterministic/in-memory demo mode during local testing when credentials are absent.

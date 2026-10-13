@@ -39,3 +39,27 @@ export async function deleteConversation(id) {
   if (!res.ok) throw new Error('Failed to delete conversation');
   return res.json();
 }
+
+export async function simplifyDocumentFile({ file, text, filename }) {
+  let res;
+  if (file) {
+    const formData = new FormData();
+    formData.append('document', file);
+    res = await fetch(`${API_BASE}/documents/simplify`, {
+      method: 'POST',
+      body: formData
+    });
+  } else {
+    res = await fetch(`${API_BASE}/documents/simplify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, filename })
+    });
+  }
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data?.error?.message || data?.error || data?.message || 'Failed to simplify document');
+  }
+  return data.document;
+}

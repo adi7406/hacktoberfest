@@ -46,7 +46,7 @@
 - [x] Enabled and verified live Groq open-weight inference integration with `openai/gpt-oss-120b` and low-temperature factuality prompt grounding in [`llmService.js`](file:///e:/Engineering/hackStorm/NyayaAccess/server/services/llmService.js).
 - [x] Upgraded markdown section parser in [`GuidanceContent.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/components/GuidanceContent.jsx) to detect both `### ` and bold `**Heading**` titles, auto-link bare URLs, and render interactive "Follow-Up Questions to Consider" cards with `HelpCircle` badges.
 - [x] Added Legal Document Simplifier feature with drag-and-drop PDF parsing, text paste, automatic PII redaction (Aadhaar, PAN, card numbers, OTPs), clause breakdown, red-flag highlighting, and verified evidence retrieval.
-- [x] Committed complete working prototype to Git branch `prototype`.
+- [x] Committed complete working prototype to Git branch `prototype` (commit `e129fc5`) and successfully pushed to remote repository `origin/prototype`.
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).

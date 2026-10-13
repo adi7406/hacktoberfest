@@ -41,7 +41,8 @@
 - [x] Verified frontend production build (`npm run client:build` succeeded in 2.25s).
 - [x] Created root `package.json` with monorepo scripts (`test`, `server:dev`, `client:dev`, etc.) and `README.md`.
 - [x] Optimized lexical retrieval in `server/services/legalSearchService.js` with topical anchoring and multi-token keyword weighting, completely eliminating cross-domain false positives.
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, and `742aad7`).
+- [x] Fixed browser `window.Lock` Web API collision in [`LandingPage.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/pages/LandingPage.jsx) by importing `Lock` from `lucide-react`, resolving `TypeError: Illegal constructor`.
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, `742aad7`, and `99bd028`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).

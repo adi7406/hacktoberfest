@@ -43,7 +43,8 @@
 - [x] Optimized lexical retrieval in `server/services/legalSearchService.js` with topical anchoring and multi-token keyword weighting, completely eliminating cross-domain false positives.
 - [x] Fixed browser `window.Lock` Web API collision in [`LandingPage.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/pages/LandingPage.jsx) by importing `Lock` from `lucide-react`, resolving `TypeError: Illegal constructor`.
 - [x] Enabled and verified live Groq open-weight inference integration with `openai/gpt-oss-120b` and low-temperature factuality prompt grounding in [`llmService.js`](file:///e:/Engineering/hackStorm/NyayaAccess/server/services/llmService.js).
-- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, `742aad7`, `99bd028`, `3c94270`, and `2d8e60f`).
+- [x] Upgraded markdown section parser in [`GuidanceContent.jsx`](file:///e:/Engineering/hackStorm/NyayaAccess/client/src/components/GuidanceContent.jsx) to detect both `### ` and bold `**Heading**` titles, auto-link bare URLs, and render interactive "Follow-Up Questions to Consider" cards with `HelpCircle` badges.
+- [x] Committed complete working prototype to Git branch `prototype` (commits `1a17195`, `034c7d8`, `ab10a9f`, `f405070`, `d484148`, `742aad7`, `99bd028`, `3c94270`, `2d8e60f`, and `d919ac7`).
 
 ## Current Task
 - Goal: End-to-end implementation of NyayaAccess MVP (backend RAG pipeline + verified knowledge base + React UI).
